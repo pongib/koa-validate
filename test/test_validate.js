@@ -239,7 +239,7 @@ describe('koa-validate' , function(){
 			eq:"neq",
 			neq:'eq',
 			number4:'4',
-			contains:"hello" , 
+			contains:"hello" ,
 			notContains:"h f",
 			url:"google",
 			ip:'192.168.',
@@ -282,7 +282,24 @@ describe('koa-validate' , function(){
 		.expect(200)
 		.expect('ok' ,done);
 	});
-	
+
+	it('should validate and be ok when no query params', function(done) {
+		var app = appFactory.create();
+		app.router.get('/query',function*(){
+			this.checkQuery('limit').optional().len(3,20).trim()
+			if(this.errors){
+				this.body = this.errors;
+				return;
+			}
+			this.body= 'ok';
+		})
+
+		request(app.listen())
+			.get('/query')
+			.expect(200)
+			.expect('ok' , done);
+	})
+
 	it('there validate query should be to okay' , function(done){
 		var app = appFactory.create();
 		app.router.get('/query',function*(){
@@ -477,5 +494,3 @@ describe('koa-validate' , function(){
 		.expect('ok' , done);
 	});
 });
-
-

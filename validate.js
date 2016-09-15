@@ -71,6 +71,7 @@ function Validator(context, key, value, exists, params , goOn) {
 	this.key = key;
 	this.value = value;
 	this.exists = exists;
+	console.log(exists)
 	this.goOn = (false===goOn?false:true);
 	if(this.value && this instanceof FileValidator && 'goOn' in this.value ){
 		this.goOn = this.value.goOn;
@@ -99,6 +100,7 @@ Validator.prototype.optional = function() {
 	if (!this.exists) {
 		this.goOn = false;
 	}
+	console.log('goOn', this.goOn)
 	return this;
 };
 Validator.prototype.notEmpty = function(tip) {
@@ -494,7 +496,7 @@ Validator.prototype.toDate = function() {
 };
 Validator.prototype.toInt = function(tip, radix, options) {
 	this.isInt(tip, options);
-	if (!this.hasError()) {
+	if (!this.hasError() && this.goOn) {
 		if('number' == typeof(this.value)) {
 			return this;
 		}
@@ -504,7 +506,7 @@ Validator.prototype.toInt = function(tip, radix, options) {
 };
 Validator.prototype.toFloat = function(tip) {
 	this.isFloat(tip);
-	if (!this.hasError()) {
+	if (!this.hasError() && this.goOn) {
 		if('number' == typeof(this.value)) {
 			return this;
 		}
@@ -551,7 +553,7 @@ Validator.prototype.toBoolean = function() {
 	return this;
 };
 Validator.prototype.trim = function(c) {
-	if (!this.hasError()) {
+	if (!this.hasError() && this.goOn) {
 		this.value = this.params[this.key] = v.trim(this.value,c);
 	}
 	return this;
