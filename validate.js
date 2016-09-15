@@ -71,7 +71,6 @@ function Validator(context, key, value, exists, params , goOn) {
 	this.key = key;
 	this.value = value;
 	this.exists = exists;
-	console.log(exists)
 	this.goOn = (false===goOn?false:true);
 	if(this.value && this instanceof FileValidator && 'goOn' in this.value ){
 		this.goOn = this.value.goOn;
@@ -99,8 +98,7 @@ Validator.prototype.hasError = function() {
 Validator.prototype.optional = function() {
 	if (!this.exists) {
 		this.goOn = false;
-	}
-	console.log('goOn', this.goOn)
+	}	
 	return this;
 };
 Validator.prototype.notEmpty = function(tip) {
